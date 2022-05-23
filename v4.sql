@@ -1,20 +1,23 @@
+--longest route data
 SELECT
-    max(largest - smallest),
-    bar.trip_id
-FROM (
-    SELECT
-        max(tstamp) AS largest,
-        trip_id
-    FROM
-        breadcrumb
-    GROUP BY
-        trip_id) AS foo
-    JOIN (
+    longitude,
+    latitude,
+    speed
+FROM
+    breadcrumb
+WHERE
+    trip_id = (
         SELECT
-            min(tstamp) AS smallest,
-            trip_id
-        FROM
-            breadcrumb
-        GROUP BY
-            trip_id) AS bar ON foo.trip_id = bar.trip_id;
+            longest_trip_id ());
+
+--other data
+SELECT
+    min(tstamp) AS s,
+    max(tstamp) AS e
+FROM
+    breadcrumb
+WHERE
+    trip_id = (
+        SELECT
+            longest_trip_id ());
 
